@@ -133,8 +133,50 @@ sudo ./prepare
 ```bash
 sudo ./install.sh
 ```
+## Step 8: Generate a Self-Signed Certificate with IP SAN
 
-## Step 8: Configure Docker with Harbor’s SSL Certificate
+- Create OpenSSL Configuration File
+
+```bash
+sudo nano /etc/harbor/openssl.cnf
+```
+Add the following content to define your SSL certificate settings:
+
+```ini
+
+[ req ]
+default_bits       = 2048
+default_keyfile    = /etc/harbor/ssl/private.key
+distinguished_name = req_distinguished_name
+req_extensions     = req_ext
+x509_extensions    = v3_ca
+
+[ req_distinguished_name ]
+countryName_default          = US
+stateOrProvinceName_default  = California
+localityName_default         = San Francisco
+organizationName_default     = My Company
+commonName_default           = <your-ip-address>
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+[ v3_ca ]
+subjectAltName = @alt_names
+
+[ alt_names ]
+IP.1 = <your-ip-address>
+```
+
+- Generate the Certificate
+
+```bash
+sudo openssl genrsa -out /etc/harbor/ssl/private.key 2048
+sudo openssl req -new -x509 -key /etc/harbor/ssl/private.key -out /etc/harbor/ssl/certificate.crt -days 365 -config /etc/harbor/openssl.cnf
+```
+- Verify the Certificate and Update Docker
+
+## Step 9: Configure Docker with Harbor’s SSL Certificate
 
 Copy the Harbor certificate to Docker’s CA store:
 
@@ -152,7 +194,7 @@ sudo update-ca-certificates
 sudo systemctl restart docker
 ```
 
-## Step 9: Restart Harbor
+## Step 10: Restart Harbor
 
 Restart Harbor services to apply the configurations:
 
@@ -161,7 +203,7 @@ sudo docker-compose down
 sudo docker-compose up -d
 ```
 
-## Step 10: Test the Configuration
+## Step 11: Test the Configuration
 
 Verify that you can log in to Harbor without SSL certificate errors:
 
