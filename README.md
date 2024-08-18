@@ -212,9 +212,23 @@ docker login <your-ip-address>
 ```
 
 Replace <your-ip-address> with the IP address of your Harbor server.
+if you face this 
+Error response from daemon: Get "https://103.172.26.38/v2/": tls: failed to verify certificate: x509: cannot validate certificate for 103.172.26.38 because it doesn't contain any IP SANs then
 
+## Step 12: Test the Configuration
 
+```bash
+sudo nano /etc/docker/daemon.json
+```
+```bash
+{
+  "insecure-registries": ["103.172.26.38"]
+}
+```
+```bash
+sudo systemctl restart docker
 
+```
 
 
 
