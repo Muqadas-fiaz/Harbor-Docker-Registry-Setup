@@ -144,28 +144,31 @@ Add the following content to define your SSL certificate settings:
 
 ```ini
 
-[ req ]
-default_bits       = 2048
-default_keyfile    = /etc/harbor/ssl/private.key
+[req]
+default_bits = 2048
+default_keyfile = /etc/harbor/ssl/private.key
 distinguished_name = req_distinguished_name
-req_extensions     = req_ext
-x509_extensions    = v3_ca
+req_extensions = req_ext
 
-[ req_distinguished_name ]
-countryName_default          = US
-stateOrProvinceName_default  = California
-localityName_default         = San Francisco
-organizationName_default     = My Company
-commonName_default           = <your-ip-address>
+[req_distinguished_name]
+countryName = Country Name (2 letter code)
+countryName_default = PK
+stateOrProvinceName = State or Province Name (full name)
+stateOrProvinceName_default = Punjab
+localityName = Locality Name (eg, city)
+localityName_default = Gujrat
+organizationalUnitName = Organizational Unit Name (eg, section)
+organizationalUnitName_default = Adan IT Center
+commonName = Common Name (e.g. server FQDN or YOUR name)
+commonName_default = 103.172.26.38
+commonName_max = 64
 
-[ req_ext ]
+[req_ext]
 subjectAltName = @alt_names
 
-[ v3_ca ]
-subjectAltName = @alt_names
+[alt_names]
+IP.1 = 103.172.26.38
 
-[ alt_names ]
-IP.1 = <your-ip-address>
 ```
 
 - Generate the Certificate
